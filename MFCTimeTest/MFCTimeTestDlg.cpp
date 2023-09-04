@@ -59,12 +59,17 @@ CMFCTimeTestDlg::CMFCTimeTestDlg(CWnd* pParent /*=nullptr*/)
 void CMFCTimeTestDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_START, m_editStartBtn);
+	DDX_Control(pDX, IDC_STOP, m_editStopBtn);
 }
 
 BEGIN_MESSAGE_MAP(CMFCTimeTestDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_START, &CMFCTimeTestDlg::OnBnClickedStart)
+	ON_BN_CLICKED(IDC_STOP, &CMFCTimeTestDlg::OnBnClickedStop)
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -153,3 +158,23 @@ HCURSOR CMFCTimeTestDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CMFCTimeTestDlg::OnBnClickedStart()
+{
+	// TODO: 在此加入控制項告知處理常式程式碼
+}
+
+
+void CMFCTimeTestDlg::OnBnClickedStop()
+{
+	// TODO: 在此加入控制項告知處理常式程式碼
+}
+
+
+void CMFCTimeTestDlg::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+
+	CDialogEx::OnTimer(nIDEvent);
+}
