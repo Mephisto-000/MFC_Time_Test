@@ -13,6 +13,10 @@
 #endif
 
 
+DWORD g_dwCurrentTime;
+double g_dTimeCurrentSpan;
+
+
 // 對 App About 使用 CAboutDlg 對話方塊
 
 class CAboutDlg : public CDialogEx
@@ -61,6 +65,8 @@ void CMFCTimeTestDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_START, m_editStartBtn);
 	DDX_Control(pDX, IDC_STOP, m_editStopBtn);
+	DDX_Control(pDX, IDC_STATIC_CALCULATE_TIME, m_staticCalculateTime);
+	DDX_Control(pDX, IDC_STATIC_ELAPSE_TIME, m_staticElapseTime);
 }
 
 BEGIN_MESSAGE_MAP(CMFCTimeTestDlg, CDialogEx)
@@ -162,19 +168,64 @@ HCURSOR CMFCTimeTestDlg::OnQueryDragIcon()
 
 void CMFCTimeTestDlg::OnBnClickedStart()
 {
-	// TODO: 在此加入控制項告知處理常式程式碼
+
+	UINT nInterval = 1000;  // 1秒
+
+	g_dwCurrentTime = timeGetTime();
+
+	SetTimer(1, nInterval, NULL);
+	SetTimer(2, nInterval, NULL);
 }
 
 
 void CMFCTimeTestDlg::OnBnClickedStop()
 {
-	// TODO: 在此加入控制項告知處理常式程式碼
+	KillTimer(1);
+	KillTimer(2);
 }
 
 
 void CMFCTimeTestDlg::OnTimer(UINT_PTR nIDEvent)
 {
-	// TODO: 在此加入您的訊息處理常式程式碼和 (或) 呼叫預設值
+	DWORD dwRecordTime = timeGetTime();
 
-	CDialogEx::OnTimer(nIDEvent);
+	if (nIDEvent == 1)
+	{
+		// 一千萬次迴圈時間測試
+		int intLoopCount = 100000000;
+
+
+		// 隨機產生數字
+		std::mt19937 rng(std::random_device{}());
+		std::uniform_int_distribution<int> dist(1, 100);
+
+		for (int i = 0; i < intLoopCount; i++)
+		{
+			int iRandomA = dist(rng);
+			int iRandomB = dist(rng);
+			int iResult = iRandomA * iRandomB;
+		}
+
+		DWORD dwElapsedTime = dwRecordTime - g_dwCurrentTime;
+		double seconds = static_cast<double>(dwElapsedTime) / 1000.0;
+
+		m_strCalculateTime.Format(_T("%.7f"), seconds);
+
+		m_staticCalculateTime.SetWindowText(m_strCalculateTime);
+	}
+	else if (nIDEvent == 2)
+	{
+		DWORD dwElapsedTime = dwRecordTime - g_dwCurrentTime;
+
+		double seconds = static_cast<double>(dwElapsedTime) / 1000.0;
+
+		m_strRealTime.Format(_T("%.7f"), seconds);
+
+		m_staticElapseTime.SetWindowText(m_strRealTime);
+
+	}
+
+
+	CDialogEx::OnTimer(1);
+	CDialogEx::OnTimer(2);
 }

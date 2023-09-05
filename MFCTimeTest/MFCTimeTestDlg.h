@@ -2,8 +2,14 @@
 // MFCTimeTestDlg.h: 標頭檔
 //
 
+#include <mmsystem.h>                                   // 包含 timeGetTime 函數的標頭
+#include <random>
+
 #pragma once
 
+// 加入 mmysystem.h 中的 timeGetTime 時需加入以下連接庫
+// "winmm.lib" 是 Windows Multimedia API
+#pragma comment(lib, "winmm.lib ")
 
 // CMFCTimeTestDlg 對話方塊
 class CMFCTimeTestDlg : public CDialogEx
@@ -35,7 +41,12 @@ public:
 	CButton m_editStartBtn;
 	CButton m_editStopBtn;
 
+	CString m_strCalculateTime;
+	CString m_strRealTime;
+
 	afx_msg void OnBnClickedStart();
 	afx_msg void OnBnClickedStop();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	CStatic m_staticCalculateTime;
+	CStatic m_staticElapseTime;
 };
